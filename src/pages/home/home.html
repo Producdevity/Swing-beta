@@ -1,17 +1,37 @@
 <ion-header>
-  <ion-navbar color="danger">
-    <ion-title>Home</ion-title>
-  </ion-navbar>
+	<ion-navbar color="danger">
+		<ion-title>Swing</ion-title>
+		<ion-buttons end>
+			<button ion-button icon-only (click)="goToMap()">
+				<ion-icon name="map"></ion-icon>
+			</button>
+		</ion-buttons>
+	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+	<h2>Welkom bij Swing!</h2>
+
+	<ion-searchbar
+			[(ngModel)]="searchQuery"
+			[showCancelButton]="true"
+			(ionInput)="onInput($event)"
+			(ionCancel)="onCancel($event)">
+	</ion-searchbar>
+
+	<ion-list>
+		<ion-item *ngFor="let swing of swings | async">
+			<ion-icon item-left>
+				<ion-icon class="open" ios="ios-clock" md="md-clock"></ion-icon>
+			</ion-icon>
+			<h2>{{swing.name}}</h2>
+			<h3>likes: {{swing.likes}}</h3>
+			<p>open tot 23:59</p>
+			<ion-icon item-right>
+			<ion-icon class="likes" ios="ios-heart" md="md-heart" (click)="likeSwing(swing)" [class.liked]="hasLiked(swing.$key)"><span> {{swing.likes}}</span></ion-icon>
+				<ion-icon class="arrow" ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>
+			</ion-icon>
+		</ion-item>
+	</ion-list>
+
 </ion-content>

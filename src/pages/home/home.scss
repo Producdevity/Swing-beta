@@ -1,3 +1,34 @@
 page-home {
 
+	ion-icon.open {
+		color: #009200;
+	}
+
+	ion-icon.closed {
+		color: red;
+	}
+
+	ion-icon.arrow {
+		opacity: 0.8;
+	}
+
+	ion-icon.likes {
+		color: #6a6a6a;
+		opacity: 0.9;
+		font-size: 0.9em;
+		margin-right: 10px;
+
+		&.liked {
+			opacity: 1;
+			color: #e90000;
+		}
+
+		span{
+			position: absolute;
+			top: 20px;
+			color: #060606;
+			font-size: 0.6em;
+		}
+	}
+
 }
