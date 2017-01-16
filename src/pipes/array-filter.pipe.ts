@@ -14,7 +14,7 @@ export class ArrayFilterPipe implements PipeTransform {
 			return value.filter(item => {
 				for (let key in item) {
 					if ((typeof item[key] === 'string' || item[key] instanceof String) &&
-							(item[key].indexOf(args[0]) !== -1)) {
+							(item[key].toLowerCase().indexOf(args[0]) !== -1)) {
 						return true;
 					}
 				}

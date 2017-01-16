@@ -1,14 +1,17 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+// import { Storage } from '@ionic/storage';
 import { MyApp } from './app.component';
+// Pages
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
-
-import { AngularFireModule } from 'angularfire2';
-// import { Storage } from '@ionic/storage';
+import { MapPage } from '../pages/map/map';
+// Pipes
 import { ArrayFilterPipe } from '../pipes/array-filter.pipe';
+//Thirtparty modules
+import { AngularFireModule } from 'angularfire2';
 
 export const FB_CONFIG = {
 	apiKey:            "AIzaSyCfsMsPgWId2bG7AibwY7CyDccF5mbkC3E",
@@ -25,6 +28,7 @@ export const FB_CONFIG = {
 		ContactPage,
 		HomePage,
 		TabsPage,
+		MapPage,
 		ArrayFilterPipe
 	],
 	imports:         [
@@ -37,7 +41,8 @@ export const FB_CONFIG = {
 		AboutPage,
 		ContactPage,
 		HomePage,
-		TabsPage
+		TabsPage,
+		MapPage
 	],
 	providers:       [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

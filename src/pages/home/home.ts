@@ -59,6 +59,7 @@ export class HomePage {
 	 * @returns {boolean}
 	 */
 	hasLiked(swingId) {
+		// return true;
 		return this.currentUser.likes.indexOf(swingId) > -1;
 	}
 
