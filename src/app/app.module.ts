@@ -7,7 +7,8 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { AngularFireModule } from 'angularfire2';
-import { Storage } from '@ionic/storage';
+// import { Storage } from '@ionic/storage';
+import { ArrayFilterPipe } from '../pipes/array-filter.pipe';
 
 export const FB_CONFIG = {
 	apiKey:            "AIzaSyCfsMsPgWId2bG7AibwY7CyDccF5mbkC3E",
@@ -23,7 +24,8 @@ export const FB_CONFIG = {
 		AboutPage,
 		ContactPage,
 		HomePage,
-		TabsPage
+		TabsPage,
+		ArrayFilterPipe
 	],
 	imports:         [
 		IonicModule.forRoot(MyApp),

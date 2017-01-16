@@ -3,6 +3,7 @@ import { NavController, AlertController } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 import { USERS } from '../../providers/mock-user';
+import { MapPage } from '../map/map';
 
 @Component({
 	selector:    'page-home',
@@ -11,8 +12,9 @@ import { USERS } from '../../providers/mock-user';
 export class HomePage {
 	swings: FirebaseListObservable<any>;
 
-	public searchQuery: string = '';
-	public users               = USERS;
+	public searchQuery: string;
+
+	public users = USERS;
 	public currentUser: any;
 
 	constructor(public navCtrl: NavController,
@@ -20,7 +22,7 @@ export class HomePage {
 	            private fb: AngularFire) {
 		this.swings      = fb.database.list('/swings/swings');
 		this.currentUser = this.users[0];
-		console.log(this.currentUser);
+		this.searchQuery = '';
 	}
 
 	onInput() {
@@ -31,9 +33,11 @@ export class HomePage {
 		console.log('cancel');
 	}
 
+	/**
+	 * Go to MapPage onClick
+	 */
 	goToMap() {
-		console.log('go to map');
-		// navCtrl.push();
+		this.navCtrl.push(MapPage);
 	}
 
 	/**
@@ -70,7 +74,6 @@ export class HomePage {
 			swing.likes++;
 		}
 		this.toggleLike(swing.$key);
-
 	}
 
 }

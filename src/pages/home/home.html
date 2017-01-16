@@ -20,7 +20,7 @@
 	</ion-searchbar>
 
 	<ion-list>
-		<ion-item *ngFor="let swing of swings | async">
+		<ion-item *ngFor="let swing of swings | async | filter:searchQuery">
 			<ion-icon item-left>
 				<ion-icon class="open" ios="ios-clock" md="md-clock"></ion-icon>
 			</ion-icon>
