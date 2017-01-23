@@ -1,11 +1,33 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      About
-    </ion-title>
-  </ion-navbar>
+	<ion-navbar color="danger">
+		<ion-buttons text-center>
+			<button ion-button icon-only>
+				<ion-icon ios="ios-heart" md="md-heart"></ion-icon>
+			</button>
+		</ion-buttons>
+		<!--<ion-title text-center>-->
+		<!--Favorieten-->
+		<!--</ion-title>-->
+	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
-
+	<ion-list>
+		<p *ngIf="!currentUser.likes.length">Je hebt nog geen favorieten, klik op het hartje om een
+			kroeg toe te voegen aan je favorieten</p>
+		<ion-item *ngFor="let like of currentUser.likes">
+			<ion-icon item-left>
+				<ion-icon ios="ios-heart" md="md-heart"></ion-icon>
+			</ion-icon>
+			<h2>{{(getSwing(like) | async)?.name }}</h2>
+			<!--<h3>0,8km</h3>-->
+			<!--<p>{{(getSwing(like) | async)?.name }}</p>-->
+			<ion-icon item-right>
+				<ion-icon class="arrow" ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>
+			</ion-icon>
+		</ion-item>
+	</ion-list>
+	<hr>
+	<p>Je favorieten worden momenteel tijdelijk opgeslagen in de demo versie,
+		in de official release is het wel mogelijk om een kroeg toe te voegen aan je favorieten</p>
 </ion-content>

@@ -13,6 +13,8 @@ export class ArrayFilterPipe implements PipeTransform {
 		} else if (value) {
 			return value.filter(item => {
 				for (let key in item) {
+					// console.log(`item ${item}`);
+					// console.log(`key ${key}`);
 					if ((typeof item[key] === 'string' || item[key] instanceof String) &&
 							(item[key].toLowerCase().indexOf(args[0]) !== -1)) {
 						return true;
@@ -22,14 +24,4 @@ export class ArrayFilterPipe implements PipeTransform {
 		}
 	}
 }
-// 	transform(items: Array<any>, conditions: {[field: string]: any}): Array<any> {
-// 		return items.filter(item => {
-// 			for (let field in conditions) {
-// 				if (item[field] !== conditions[field]) {
-// 					return false;
-// 				}
-// 			}
-// 			return true;
-// 		});
-// 	}
-// }
+

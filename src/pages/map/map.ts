@@ -1,72 +1,43 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import {
-	GoogleMap,
-	GoogleMapsEvent,
-	GoogleMapsLatLng,
-	CameraPosition,
-	GoogleMapsMarkerOptions,
-	GoogleMapsMarker
-} from 'ionic-native';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import 'rxjs/add/operator/map'
 
-/*
- Generated class for the Map page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
 @Component({
 	selector:    'page-map',
 	templateUrl: 'map.html'
 })
 export class MapPage {
-	lat: number = 51.678418;
-	lng: number = 7.809007;
-	constructor(public navCtrl: NavController, public navParams: NavParams) {
+	zoom: number = 12;
+
+	lat: number = 52.0973911;
+	lng: number = 5.1145325;
+
+	location: any;
+
+	swings: FirebaseListObservable<any>;
+
+	constructor(private fb: AngularFire) {
+		this.swings      = fb.database.list('/swings');
+		this.location    = {};
 	}
 
-	ionViewDidLoad() {
-		console.log('ionViewDidLoad MapPage');
+	ngDoCheck() {
+		if(this.location.latitude == undefined){
+			this.getGeolocation();
+		}
 	}
 
-// Load map only after view is initialize
-	ngAfterViewInit() {
-		console.log('ngAfterViewInit');
-		this.loadMap();
+
+	setPosition(position) {
+		this.location = position.coords;
 	}
 
-	loadMap() {
-		// create a new map by passing HTMLElement
-		let element: HTMLElement = document.getElementById('map');
-
-		let map = new GoogleMap(element);
-
-		// listen to MAP_READY event
-		map.one(GoogleMapsEvent.MAP_READY).then(() => console.log('Map is ready!'));
-
-		// create LatLng object
-		let ionic: GoogleMapsLatLng = new GoogleMapsLatLng(43.0741904, -89.3809802);
-
-		// create CameraPosition
-		let position: CameraPosition = {
-			target: ionic,
-			zoom:   18,
-			tilt:   30
-		};
-
-		// move the map's camera to position
-		map.moveCamera(position);
-
-		// create new marker
-		let markerOptions: GoogleMapsMarkerOptions = {
-			position: ionic,
-			title:    'Ionic'
-		};
-
-		map.addMarker(markerOptions)
-				.then((marker: GoogleMapsMarker) => {
-					marker.showInfoWindow();
-				});
+	getGeolocation() {
+		if (this.location.latitude == undefined) {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(this.setPosition.bind(this));
+			}
+		}
 	}
 
 }

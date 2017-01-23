@@ -1,3 +1,45 @@
+	.welcome>.toolbar-title-md,
+	.welcome>.toolbar-title-ios{
+		font-weight: 200!important;
+	}
 page-home {
+
+	.loading {
+		text-align: center;
+	}
+	
+	.welcome{
+		font-weight: 200;
+		text-align: center;
+	}
+
+	ion-icon.open {
+		color: #009200;
+	}
+
+	ion-icon.closed {
+		color: red;
+	}
+
+	ion-icon.arrow {
+		opacity: 1;
+	}
+
+	ion-icon.likes {
+		color: #6a6a6a;
+		opacity: 0.9;
+		font-size: 0.9em;
+		margin-right: 10px;
+
+		span{
+			color: #060606;
+			font-size: 0.6em;
+		}
+
+		&.liked {
+			color: #e90000;
+			opacity: 1;
+		}
+	}
 
 }

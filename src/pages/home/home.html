@@ -1,17 +1,40 @@
 <ion-header>
-  <ion-navbar color="danger">
-    <ion-title>Home</ion-title>
-  </ion-navbar>
+	<ion-navbar color="danger">
+		<ion-title class="welcome">Welcome to SWING!</ion-title>
+		<ion-buttons end>
+			<button ion-button icon-only (click)="goToMap()">
+				<ion-icon name="map"></ion-icon>
+			</button>
+		</ion-buttons>
+	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+	<!-- Search bar-->
+	<ion-searchbar
+			[(ngModel)]="searchQuery"
+			[showCancelButton]="true">
+	</ion-searchbar>
+
+	<ion-list>
+		<!--Show spinner while resolving location and the swings-->
+		<ion-item class="loading" *ngIf="!location.latitude">
+			<ion-spinner></ion-spinner><p>Loading...</p>
+		</ion-item>
+		<!--List al the SWINGS-->
+		<ion-item *ngFor="let swing of swings | async |  orderByStatus: day | orderByDis: location | filter: searchQuery ">
+			<ion-icon item-left>
+				<ion-icon [class.open]="isOpen(swing[day])" ios="ios-clock" md="md-clock"></ion-icon>
+			</ion-icon>
+			<h2>{{swing.name}}</h2>
+			<p>{{getDistance(swing.location) | number : '1.2-2' }}m</p>
+			<p *ngIf="isOpen(swing[day])">Openingstijden {{swing[day]}}</p>
+			<p *ngIf="!isOpen(swing[day])">Onbekend</p>
+			<ion-icon item-right>
+			<ion-icon class="likes" ios="ios-heart" md="md-heart" (click)="likeSwing(swing)" [class.liked]="hasLiked(swing.$key)"><span> {{swing.likes}}</span></ion-icon>
+				<ion-icon class="arrow" ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>
+			</ion-icon>
+		</ion-item>
+	</ion-list>
+
 </ion-content>

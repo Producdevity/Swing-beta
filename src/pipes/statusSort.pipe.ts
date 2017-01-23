@@ -1,61 +1,57 @@
 import { Pipe, PipeTransform } from "@angular/core";
-//
-// @Pipe({
-// 	name: "filter"
-// })
-// export class SortPipe implements PipeTransform {
-// 	transform(array, args) {
-// 		if (array==null) {
-// 			return null;
-// 		}
-// 		if (!args[0]) {
-// 			return array;
-// 		} else if (array) {
-// 			return array.filter(item => {
-// 				for (let key in item) {
-// 					if ((typeof item[key] === 'string' || item[key] instanceof String) &&
-// 							(item[key].toLowerCase().indexOf(args[0]) !== -1)) {
-// 						return true;
-// 					}
-// 				}
-// 			});
-// 		}
-// 	}
-// }
-
 
 @Pipe({
-	name: 'orderByDis'
+	name: 'orderByStatus'
 })
-export class OrderByPipe implements PipeTransform {
+export class OrderByStatusPipe implements PipeTransform {
 
-	rad(x) {
-		return x * Math.PI / 180;
+	getTodayMinutes() {
+		let TodayDate = new Date();
+		let m = TodayDate.getMinutes();
+		let h = TodayDate.getHours();
+		let timeObj = {
+			h: h,
+			m: m
+		}
+		return timeObj;
 	}
 
-	getDistance(p2, location) {
-		var R     = 6378137; // Earth’s mean radius in meter
-		var dLat  = this.rad(p2.lat - location.latitude);
-		var dLong = this.rad(p2.lng - location.longitude);
-		var a     = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-				Math.cos(this.rad(location.latitude)) * Math.cos(this.rad(p2.lat)) *
-				Math.sin(dLong / 2) * Math.sin(dLong / 2);
-		var c     = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		var d     = R * c;
-		return d; // returns the distance in meter
+	getSwingMinutes(swingTime){
+		let arrayTime = swingTime.split(' - ');
+		let closeTime = arrayTime[1];
+		let cl = closeTime.split(':')
+		let timeObj = {
+			h: cl[0],
+			m: cl[1]
+		}
+		return timeObj;
 	}
+
+	isOpen(swingTime){
+		if(!swingTime) return false;
+		let timeObj = this.getSwingMinutes(swingTime);
+		let timeObjNow = this.getTodayMinutes();
+		let dateSwing = new Date(2017, 0, 1,  timeObj.h, timeObj.m); // 9:00 AM
+		let midNight = new Date(2017, 0, 1,  0, 0); // MIDNIGHT
+		let dateToday = new Date(2017, 0, 1, timeObjNow.h, timeObjNow.m); // 5:00 PM
+		if (midNight < dateSwing || (timeObj.h == '00' && timeObj.m == '00')) {
+			dateSwing.setDate(dateSwing.getDate() + 1);
+		}
+		return dateSwing > dateToday;
+	}
+
 
 	transform(array: Array<any>, args: any): Array<any> {
-		console.log(args);
+		// console.log(args);
 		if (array==null) {
 			return null;
 		}
 		array.sort((a: any, b: any) => {
-			a = this.getDistance(a.location, args);
-			b = this.getDistance(b.location, args);
-			if (a < b) {
+			a = this.isOpen(a[args]);
+			b = this.isOpen(b[args]);
+			if (a > b) {
 				return -1;
-			} else if (a > b) {
+			} else if (a < b) {
 				return 1;
 			} else {
 				return 0;

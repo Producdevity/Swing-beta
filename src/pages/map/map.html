@@ -13,9 +13,31 @@
 </ion-header>
 
 
-<ion-content padding>
-	<!--<div #map id="map"></div>-->
-	<sebm-google-map [latitude]="lat" [longitude]="lng">
-		<sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
+<ion-content>
+	<sebm-google-map
+			[latitude]="location.latitude"
+			[longitude]="location.longitude"
+			[zoom]="zoom"
+			[disableDefaultUI]="false"
+			[zoomControl]="true">
+
+		<sebm-google-map-marker
+				[latitude]="location.latitude"
+				[longitude]="location.longitude"
+				iconUrl="assets/center.png">
+		</sebm-google-map-marker>
+
+		<sebm-google-map-marker
+				*ngFor="let m of swings | async"
+				[latitude]="m.location.lat || lat"
+				[longitude]="m.location.lng || lng">
+
+			<sebm-google-map-info-window>
+				<strong>{{m.name}}</strong>
+			</sebm-google-map-info-window>
+
+		</sebm-google-map-marker>
+
 	</sebm-google-map>
+
 </ion-content>

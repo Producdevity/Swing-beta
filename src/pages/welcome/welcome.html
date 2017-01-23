@@ -6,13 +6,14 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>welcome</ion-title>
-  </ion-navbar>
+	<ion-navbar color="danger">
+		<ion-title class="welcome">Welcome to SWING!</ion-title>
+	</ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content text-center>
+	<button class="start" ion-button round color="dark" (click)="goToApp()">BEGIN MET SWINGEN!<br /> DRUK HIER</button>
+	<ion-img class="welcome-image" src="assets/swing_bg.jpg"></ion-img>
 </ion-content>
