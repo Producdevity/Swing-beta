@@ -10,13 +10,14 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { MapPage } from '../pages/map/map';
 // Pipes
 import { ArrayFilterPipe } from '../pipes/array-filter.pipe';
+import { DistancePipe } from '../pipes/distance.pipe';
+import { OrderByStatusPipe } from '../pipes/statusSort.pipe';
+import { OrderByPipe } from '../pipes/sort.pipe';
 //Thirtparty modules
 import { AngularFireModule } from 'angularfire2';
 import { Auth } from '../providers/auth';
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import { WelcomePage } from '../pages/welcome/welcome';
-import { OrderByPipe } from '../pipes/sort.pipe';
-import { OrderByStatusPipe } from '../pipes/statusSort.pipe';
 
 export const FB_CONFIG = {
 	apiKey:            "AIzaSyCfsMsPgWId2bG7AibwY7CyDccF5mbkC3E",
@@ -37,7 +38,8 @@ export const FB_CONFIG = {
 		MapPage,
 		ArrayFilterPipe,
 		OrderByPipe,
-		OrderByStatusPipe
+		OrderByStatusPipe,
+		DistancePipe
 	],
 	imports:         [
 		IonicModule.forRoot(MyApp),

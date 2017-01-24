@@ -12,6 +12,7 @@ import { Http } from '@angular/http';
 	templateUrl: 'home.html'
 })
 export class HomePage {
+	public filterSwitch: string;
 	swings: FirebaseListObservable<any>;
 
 	location: any;
@@ -31,7 +32,7 @@ export class HomePage {
 	            public alertCtrl: AlertController,
 	            private fb: AngularFire,
 	            private http: Http) {
-
+		this.filterSwitch = 'distance';
 		this.currentUser = this.users[0];
 		this.swings      = fb.database.list('/swings');
 
@@ -175,7 +176,6 @@ export class HomePage {
 	setPosition(position) {
 		this.location = position.coords;
 	}
-
 
 	/**
 	 * Get geolocation of current location
