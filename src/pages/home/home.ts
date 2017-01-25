@@ -269,7 +269,13 @@ export class HomePage {
 	swingDetail(swing) {
 		console.log(swing);
 		let data = {
-			title: swing.name
+			location: swing.location,
+			name: swing.name,
+			likes: swing.likes,
+			city: swing.city,
+			houseNumber: swing.houseNumber,
+			street: swing.street,
+			zipcode: swing.zipcode
 		}
 		this.navCtrl.push(SwingDetailPage, data);
 	}

@@ -1,11 +1,37 @@
 <ion-header>
 
 	<ion-navbar color="danger">
-		<ion-title class="title">{{title}}</ion-title>
+		<ion-title class="title">{{name}}</ion-title>
 	</ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+	<ion-list padding>
+		<ion-item>
+			<h2 class="name">{{name}}</h2>
+			<ion-icon item-right>
+				<ion-icon class="likes" ios="ios-heart" md="md-heart"><span> {{likes}}</span></ion-icon>
+			</ion-icon>
+		</ion-item>
+		<ion-item class="address">
+			<p>{{street}} {{houseNumber}}</p>
+			<p>{{zipcode}} {{city}}</p>
+		</ion-item>
+	</ion-list>
+
+	<!--Map centered on swing location-->
+	<sebm-google-map
+			[latitude]="location.lat"
+			[longitude]="location.lng"
+			[zoom]="12"
+			[disableDefaultUI]="false"
+			[zoomControl]="true">
+		<sebm-google-map-marker
+				[latitude]="location.lat"
+				[longitude]="location.lng">
+		</sebm-google-map-marker>
+	</sebm-google-map>
+
 </ion-content>
