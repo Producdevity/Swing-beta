@@ -4,7 +4,6 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 import { USERS } from '../../providers/mock-user';
 import { MapPage } from '../map/map';
-// import { Auth } from '../../providers/auth';
 import { Http } from '@angular/http';
 import { SwingDetailPage } from '../swing-detail/swing-detail';
 
@@ -34,7 +33,7 @@ export class HomePage {
 	            public alertCtrl: AlertController,
 	            private fb: AngularFire,
 	            private http: Http) {
-		this.filterSwitch = 'distance';
+		this.filterSwitch = 'status';
 		this.currentUser = this.users[0];
 		this.swings      = fb.database.list('/swings');
 		this.geoOff = false;
@@ -97,17 +96,30 @@ export class HomePage {
 				.then(data => console.log(data));
 	}
 
+	/**
+	 * present alert when GPS if turned off
+	 * @param err
+	 */
 	presentAlert(err) {
 		if(!this.geoOff){
 		console.log(err);
 
 		let alert = this.alertCtrl.create({
 			title: 'Location not found',
-			subTitle: 'Please turn on your GPS or locaton service',
+			subTitle: 'Please turn on your GPS or locaton service if you want to filter on distance',
 			buttons: ['Ok']
 		});
 		this.geoOff = true;
+		this.filterSwitch = 'status';
 		alert.present();
+		}
+	}
+
+	isLoading() {
+		if(this.geoOff){
+			return false
+		} else if(this.location.latitude == undefined){
+			return true;
 		}
 	}
 

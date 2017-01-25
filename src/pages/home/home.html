@@ -1,6 +1,6 @@
 <ion-header>
 	<ion-navbar color="danger">
-		<ion-title class="welcome">Start to SWING!</ion-title>
+		<ion-title class="welcome">Start to <i>SWING!</i></ion-title>
 		<ion-buttons end>
 			<button ion-button icon-only (click)="goToMap()">
 				<img width="35" height="35" src="assets/maps-icon.png"/>
@@ -27,16 +27,18 @@
 		</ion-segment>
 	</div>
 	<!--Show spinner while resolving location and the swings-->
-	<ion-item class="loading" *ngIf="!location.latitude">
+	<ion-item class="loading" *ngIf="isLoading()">
 		<ion-spinner></ion-spinner>
 		<p>Loading...</p>
 	</ion-item>
 
 	<!--Switch div betweed the filter above-->
 	<div [ngSwitch]="filterSwitch">
-	<!--Switch Case for stutus-->
+		<!--Switch Case for stutus-->
 		<ion-list *ngSwitchCase="'status'">
-			<ion-item *ngFor="let swing of swings | async |  orderByStatus: day | filter: searchQuery" (click)="swingDetail(swing)">
+			<ion-item
+					*ngFor="let swing of swings | async |  orderByStatus: day | filter:'name':searchQuery"
+					(click)="swingDetail(swing)">
 				<ion-icon item-left>
 					<ion-icon [class.open]="isOpen(swing[day])" ios="ios-clock" md="md-clock"></ion-icon>
 				</ion-icon>
@@ -53,7 +55,9 @@
 		</ion-list>
 		<!--Switch Case for distance-->
 		<ion-list *ngSwitchCase="'distance'">
-			<ion-item *ngFor="let swing of swings | async | orderByDis: location | filter: searchQuery" (click)="swingDetail(swing)">
+			<ion-item
+					*ngFor="let swing of swings | async | orderByDis: location | filter:'name':searchQuery"
+					(click)="swingDetail(swing)">
 				<ion-icon item-left>
 					<ion-icon [class.open]="isOpen(swing[day])" ios="ios-clock" md="md-clock"></ion-icon>
 				</ion-icon>

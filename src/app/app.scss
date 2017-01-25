@@ -14,3 +14,20 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+div.tabbar.show-tabbar a.tab-button:first-child{
+	//background-color: #50B1FF;
+	background: url('../assets/swing-logo-white.png') no-repeat center;
+	background-size: 39px 39px;
+}
+
+div.tabbar.show-tabbar a.tab-button:first-child ion-icon{
+	opacity: 0;
+}
+.swing {
+	//background-color: blue!important;
+}
+//ion-tabs {
+//	background-color: #32db64;
+//}
+

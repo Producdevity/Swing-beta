@@ -4,24 +4,20 @@ import { Pipe, PipeTransform } from "@angular/core";
 	name: "filter"
 })
 export class ArrayFilterPipe implements PipeTransform {
-	transform(value, args) {
-		if (value==null) {
-			return null;
-		}
-		if (!args[0]) {
-			return value;
-		} else if (value) {
-			return value.filter(item => {
-				for (let key in item) {
-					// console.log(`item ${item}`);
-					// console.log(`key ${key}`);
-					if ((typeof item[key] === 'string' || item[key] instanceof String) &&
-							(item[key].toLowerCase().indexOf(args[0]) !== -1)) {
-						return true;
-					}
+	public transform(value, key: string, term: string) {
+		if (value == null) return null;
+		return value.filter((item) => {
+			if (item.hasOwnProperty(key)) {
+				if (term) {
+					let regExp = new RegExp('\\b' + term, 'gi');
+					return regExp.test(item[key]);
+				} else {
+					return true;
 				}
-			});
-		}
+			} else {
+				return false;
+			}
+		});
 	}
 }
 
