@@ -18,6 +18,7 @@ import { AngularFireModule } from 'angularfire2';
 import { Auth } from '../providers/auth';
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import { WelcomePage } from '../pages/welcome/welcome';
+import { SwingDetailPage } from '../pages/swing-detail/swing-detail';
 
 export const FB_CONFIG = {
 	apiKey:            "AIzaSyCfsMsPgWId2bG7AibwY7CyDccF5mbkC3E",
@@ -36,6 +37,7 @@ export const FB_CONFIG = {
 		HomePage,
 		TabsPage,
 		MapPage,
+		SwingDetailPage,
 		ArrayFilterPipe,
 		OrderByPipe,
 		OrderByStatusPipe,
@@ -56,6 +58,7 @@ export const FB_CONFIG = {
 		WelcomePage,
 		ContactPage,
 		HomePage,
+		SwingDetailPage,
 		TabsPage,
 		MapPage
 	],

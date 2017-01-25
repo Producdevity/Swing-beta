@@ -15,7 +15,7 @@
 			[(ngModel)]="searchQuery"
 			[showCancelButton]="true">
 	</ion-searchbar>
-<!--Switch filter buttons-->
+	<!--Switch filter buttons-->
 	<div padding>
 		<ion-segment [(ngModel)]="filterSwitch">
 			<ion-segment-button value="distance">
@@ -28,12 +28,15 @@
 	</div>
 	<!--Show spinner while resolving location and the swings-->
 	<ion-item class="loading" *ngIf="!location.latitude">
-		<ion-spinner></ion-spinner><p>Loading...</p>
+		<ion-spinner></ion-spinner>
+		<p>Loading...</p>
 	</ion-item>
 
+	<!--Switch div betweed the filter above-->
 	<div [ngSwitch]="filterSwitch">
+	<!--Switch Case for stutus-->
 		<ion-list *ngSwitchCase="'status'">
-			<ion-item *ngFor="let swing of swings | async |  orderByStatus: day | filter: searchQuery ">
+			<ion-item *ngFor="let swing of swings | async |  orderByStatus: day | filter: searchQuery" (click)="swingDetail(swing)">
 				<ion-icon item-left>
 					<ion-icon [class.open]="isOpen(swing[day])" ios="ios-clock" md="md-clock"></ion-icon>
 				</ion-icon>
@@ -41,15 +44,16 @@
 				<p *ngIf="isOpen(swing[day])">{{swing[day]}}</p>
 				<p *ngIf="!isOpen(swing[day])">Onbekend</p>
 				<ion-icon item-right>
-					<ion-icon class="likes" ios="ios-heart" md="md-heart" (click)="likeSwing(swing)" [class.liked]="hasLiked(swing.$key)"><span> {{swing.likes}}</span></ion-icon>
+					<ion-icon class="likes" ios="ios-heart" md="md-heart" (click)="likeSwing(swing)"
+					          [class.liked]="hasLiked(swing.$key)"><span> {{swing.likes}}</span></ion-icon>
 					<ion-icon class="arrow" ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>
-					<p>{{getDistance(swing.location) | distance }}</p>
+					<p *ngIf="!geoOff">{{getDistance(swing.location) | distance }}</p>
 				</ion-icon>
 			</ion-item>
 		</ion-list>
-
+		<!--Switch Case for distance-->
 		<ion-list *ngSwitchCase="'distance'">
-			<ion-item *ngFor="let swing of swings | async | orderByDis: location | filter: searchQuery ">
+			<ion-item *ngFor="let swing of swings | async | orderByDis: location | filter: searchQuery" (click)="swingDetail(swing)">
 				<ion-icon item-left>
 					<ion-icon [class.open]="isOpen(swing[day])" ios="ios-clock" md="md-clock"></ion-icon>
 				</ion-icon>
@@ -57,9 +61,10 @@
 				<p *ngIf="isOpen(swing[day])">Openingstijden {{swing[day]}}</p>
 				<p *ngIf="!isOpen(swing[day])">Onbekend</p>
 				<ion-icon item-right>
-					<ion-icon class="likes" ios="ios-heart" md="md-heart" (click)="likeSwing(swing)" [class.liked]="hasLiked(swing.$key)"><span> {{swing.likes}}</span></ion-icon>
+					<ion-icon class="likes" ios="ios-heart" md="md-heart" (click)="likeSwing(swing)"
+					          [class.liked]="hasLiked(swing.$key)"><span> {{swing.likes}}</span></ion-icon>
 					<ion-icon class="arrow" ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>
-					<p>{{getDistance(swing.location) | distance }}</p>
+					<p *ngIf="!geoOff">{{getDistance(swing.location) | distance }}</p>
 				</ion-icon>
 			</ion-item>
 		</ion-list>

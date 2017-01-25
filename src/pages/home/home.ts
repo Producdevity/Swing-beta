@@ -6,6 +6,7 @@ import { USERS } from '../../providers/mock-user';
 import { MapPage } from '../map/map';
 // import { Auth } from '../../providers/auth';
 import { Http } from '@angular/http';
+import { SwingDetailPage } from '../swing-detail/swing-detail';
 
 @Component({
 	selector:    'page-home',
@@ -18,6 +19,7 @@ export class HomePage {
 	location: any;
 	lat: number = 52.0973911;
 	lng: number = 5.1145325;
+	geoOff: boolean;
 
 	swingGeocoded: any;
 	public searchQuery: string;
@@ -35,6 +37,7 @@ export class HomePage {
 		this.filterSwitch = 'distance';
 		this.currentUser = this.users[0];
 		this.swings      = fb.database.list('/swings');
+		this.geoOff = false;
 
 		this.TodayDate = new Date();
 		this.day = this.TodayDate.getDay();
@@ -93,6 +96,21 @@ export class HomePage {
 		this.getGeocode(swing.zipcode, swing.street, swing.houseNumber, swing.$key)
 				.then(data => console.log(data));
 	}
+
+	presentAlert(err) {
+		if(!this.geoOff){
+		console.log(err);
+
+		let alert = this.alertCtrl.create({
+			title: 'Location not found',
+			subTitle: 'Please turn on your GPS or locaton service',
+			buttons: ['Ok']
+		});
+		this.geoOff = true;
+		alert.present();
+		}
+	}
+
 
 	/**
 	 * get right format of current time
@@ -184,7 +202,7 @@ export class HomePage {
 	getGeolocation(){
 		if (this.location.latitude == undefined) {
 			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(this.setPosition.bind(this));
+				navigator.geolocation.getCurrentPosition(this.setPosition.bind(this), this.presentAlert.bind(this));
 			}
 		}
 	}
@@ -231,6 +249,17 @@ export class HomePage {
 			this.swings.update(swing.$key, { likes: swing.likes });
 		}
 		this.toggleLike(swing.$key);
+	}
+
+	/**
+	 * Go to swing detail page
+	 */
+	swingDetail(swing) {
+		console.log(swing);
+		let data = {
+			title: swing.name
+		}
+		this.navCtrl.push(SwingDetailPage, data);
 	}
 
 }
