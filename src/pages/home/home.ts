@@ -13,7 +13,7 @@ import { SwingDetailPage } from '../swing-detail/swing-detail';
 })
 export class HomePage {
 	public filterSwitch: string;
-	swings: FirebaseListObservable<any>;
+	       swings: FirebaseListObservable<any>;
 
 	location: any;
 	lat: number = 52.0973911;
@@ -34,16 +34,20 @@ export class HomePage {
 	            private fb: AngularFire,
 	            private http: Http) {
 		this.filterSwitch = 'status';
-		this.currentUser = this.users[0];
-		this.swings      = fb.database.list('/swings');
-		this.geoOff = false;
+		this.currentUser  = this.users[0];
+		this.swings       = fb.database.list('/swings');
+		this.geoOff       = false;
+		// this.location = {
+		// 	latitude: 52.0973911,
+		// 	longitude: 5.1145325
+		// }
 
 		this.TodayDate = new Date();
-		this.day = this.TodayDate.getDay();
-		this.time = this.TodayDate.getTime();
+		this.day       = this.TodayDate.getDay();
+		this.time      = this.TodayDate.getTime();
 
-		this.location    = {};
-		this.searchQuery = '';
+		this.location     = {};
+		this.searchQuery  = '';
 		this.todayMinutes = this.getTodayMinutes();
 	}
 
@@ -53,16 +57,20 @@ export class HomePage {
 	 * if set receive swings from the db
 	 */
 	ngAfterViewChecked() {
-		if(this.location.latitude == undefined){
+		if (this.location.latitude == undefined) {
 			this.getGeolocation();
 		} else {
-			if(Object.keys(this.swings).length === 0 && this.swings.constructor === Object){
-				this.swings      = this.fb.database.list('/swings');
+			if (Object.keys(this.swings).length === 0 && this.swings.constructor === Object) {
+				this.swings = this.fb.database.list('/swings');
 			}
 		}
 	}
 
-
+	/**
+	 * Check if google maps geolocation is empty
+	 * @param obj
+	 * @returns {boolean}
+	 */
 	isEmpty(obj) {
 		return obj.status == "ZERO_RESULTS";
 	}
@@ -84,7 +92,7 @@ export class HomePage {
 						if (!this.isEmpty(data)) {
 							this.swingGeocoded = data;
 							resolve(this.swingGeocoded);
-							this.swings.update(swingId, { location: this.swingGeocoded.results[0].geometry.location });
+							this.swings.update(swingId, {location: this.swingGeocoded.results[0].geometry.location});
 						}
 					});
 		});
@@ -101,36 +109,37 @@ export class HomePage {
 	 * @param err
 	 */
 	presentAlert(err) {
-		if(!this.geoOff){
-		console.log(err);
-
-		let alert = this.alertCtrl.create({
-			title: 'Location not found',
-			subTitle: 'Please turn on your GPS or locaton service if you want to filter on distance',
-			buttons: ['Ok']
-		});
-		this.geoOff = true;
-		this.filterSwitch = 'status';
-		alert.present();
+		if (!this.geoOff) {
+			let alert         = this.alertCtrl.create({
+				title:    'Location not found',
+				subTitle: 'Please turn on your GPS or locaton service if you want to filter on distance',
+				buttons:  ['Ok']
+			});
+			this.geoOff       = true;
+			this.filterSwitch = 'status';
+			alert.present();
 		}
 	}
 
+	/**
+	 * indicate if swings are still loading
+	 * @returns {boolean}
+	 */
 	isLoading() {
-		if(this.geoOff){
+		if (this.geoOff) {
 			return false
-		} else if(this.location.latitude == undefined){
+		} else if (this.location.latitude == undefined) {
 			return true;
 		}
 	}
-
 
 	/**
 	 * get right format of current time
 	 * @returns {{h: number, m: number}}
 	 */
 	getTodayMinutes() {
-		let m = this.TodayDate.getMinutes();
-		let h = this.TodayDate.getHours();
+		let m       = this.TodayDate.getMinutes();
+		let h       = this.TodayDate.getHours();
 		let timeObj = {
 			h: h,
 			m: m
@@ -143,11 +152,11 @@ export class HomePage {
 	 * @param swingTime
 	 * @returns {{h: string, m: string}}
 	 */
-	getSwingMinutes(swingTime){
+	getSwingMinutes(swingTime) {
 		let arrayTime = swingTime.split(' - ');
 		let closeTime = arrayTime[1];
-		let cl = closeTime.split(':')
-		let timeObj = {
+		let cl        = closeTime.split(':')
+		let timeObj   = {
 			h: cl[0],
 			m: cl[1]
 		}
@@ -159,13 +168,13 @@ export class HomePage {
 	 * @param swingTime
 	 * @returns {boolean}
 	 */
-	isOpen(swingTime){
-		if(!swingTime) return false; // return false if swing has no time
-		let timeObj = this.getSwingMinutes(swingTime);
+	isOpen(swingTime) {
+		if (!swingTime) return false; // return false if swing has no time
+		let timeObj    = this.getSwingMinutes(swingTime);
 		let timeObjNow = this.getTodayMinutes();
-		let dateSwing = new Date(2017, 0, 1,  timeObj.h, timeObj.m); // Date of swing closing
-		let midNight = new Date(2017, 0, 1,  0, 0); // Date (midnight)
-		let dateToday = new Date(2017, 0, 1, timeObjNow.h, timeObjNow.m); // Current Date
+		let dateSwing  = new Date(2017, 0, 1, timeObj.h, timeObj.m); // Date of swing closing
+		let midNight   = new Date(2017, 0, 1, 0, 0); // Date (midnight)
+		let dateToday  = new Date(2017, 0, 1, timeObjNow.h, timeObjNow.m); // Current Date
 		// Check if the swing is closing past midnight, if true, add 1 day to swing
 		if (midNight < dateSwing || (timeObj.h == '00' && timeObj.m == '00')) {
 			dateSwing.setDate(dateSwing.getDate() + 1);
@@ -211,7 +220,7 @@ export class HomePage {
 	 * Get geolocation of current location
 	 * call setPosition()
 	 */
-	getGeolocation(){
+	getGeolocation() {
 		if (this.location.latitude == undefined) {
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(this.setPosition.bind(this), this.presentAlert.bind(this));
@@ -255,10 +264,10 @@ export class HomePage {
 	likeSwing(swing) {
 		if (this.hasLiked(swing.$key)) {
 			swing.likes--;
-			this.swings.update(swing.$key, { likes: swing.likes });
+			this.swings.update(swing.$key, {likes: swing.likes});
 		} else {
 			swing.likes++;
-			this.swings.update(swing.$key, { likes: swing.likes });
+			this.swings.update(swing.$key, {likes: swing.likes});
 		}
 		this.toggleLike(swing.$key);
 	}
@@ -267,15 +276,14 @@ export class HomePage {
 	 * Go to swing detail page
 	 */
 	swingDetail(swing) {
-		console.log(swing);
 		let data = {
-			location: swing.location,
-			name: swing.name,
-			likes: swing.likes,
-			city: swing.city,
+			location:    swing.location,
+			name:        swing.name,
+			likes:       swing.likes,
+			city:        swing.city,
 			houseNumber: swing.houseNumber,
-			street: swing.street,
-			zipcode: swing.zipcode
+			street:      swing.street,
+			zipcode:     swing.zipcode
 		}
 		this.navCtrl.push(SwingDetailPage, data);
 	}
